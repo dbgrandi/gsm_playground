@@ -19,7 +19,11 @@
 
 #ifndef __AT_h
 #define __AT_h
-#include "Arduino.h"
+#if ARDUINO >= 100
+  #include "Arduino.h"
+#else
+  #include "WProgram.h"
+#endif
 
 /******************************* IMPORTANT ***********************************
 Keep in mind that DEBUG PRINT has only very limited functionality
@@ -27,8 +31,6 @@ and can not be 100% guaranteed becuase all debug strings are sent also to the
 GSM module and thus can be interpreted as AT commands.
 *****************************************************************************/
 //#define DEBUG_PRINT
-
-
 
 #define AT_LIB_VERSION 100 // library version X.YY (e.g. 1.00) 100 means 1.00
 /*

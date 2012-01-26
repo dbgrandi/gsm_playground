@@ -36,7 +36,11 @@
 */
 
 
-#include "Arduino.h"
+#if ARDUINO >= 100
+  #include "Arduino.h"
+#else
+  #include "WProgram.h"
+#endif
 #include "AT.h"
 
 extern "C" {
@@ -450,10 +454,18 @@ char AT::SendSMS(char *number_str, char *message_str)
 
 #ifdef DEBUG_SMS_ENABLED
       // SMS will not be sent = we will not pay => good for debugging
-      Serial.write(0x1b);
+      #if ARDUINO >= 100
+        Serial.write(0x1b);
+      #else
+        Serial.print(0x1b, BYTE);
+      #endif
       if (RX_FINISHED_STR_RECV == WaitResp(START_XXLONG_COMM_TMOUT, MAX_INTERCHAR_TMOUT, "OK")) {
 #else 
-      Serial.write(0x1a);
+      #if ARDUINO >= 100
+        Serial.write(0x1a);
+      #else
+        Serial.print(0x1a, BYTE);
+      #endif
       if (RX_FINISHED_STR_RECV == WaitResp(START_XXLONG_COMM_TMOUT, MAX_INTERCHAR_TMOUT, "+CMGS")) {
 #endif
         // SMS was send correctly 
